@@ -1,4 +1,5 @@
 import tkinter as tk
+from tkinter import simpledialog, messagebox
 import csv
 
 main_bg = '#333652'
@@ -83,6 +84,29 @@ class GUI:
             button.grid(row=5, column=button_value, sticky=tk.W+tk.E, padx="5", pady="5"  )
             
         button_frame.pack(fill="x")
+    
+    def get_questions(self):
+        category = simpledialog.askstring("Input", "Enter category: ")
+        if not category:
+            messagebox.showwarning("Input error", "You must enter a category.")
+            return
+    
+        value = simpledialog.askinteger("Input", "Enter value ($200, $400, etc.): ")
+        if not value or value not in [200, 400, 600, 800, 1000]:
+            messagebox.showwarning("Input error", "Invalid value.")
+            return
+        
+        question = simpledialog.askstring("Input", "Enter your question: ")
+        if not question:
+            messagebox.showwarning("Input error", "Question cannot be empty.")
+            return
+        
+        answer = simpledialog.askstring("Input", "Enter your answer: ")
+        if not answer:
+            messagebox.showwarning("Input error", "Answer cannot be empty.")
+            return
+        
+        messagebox.showinfo("Done", "Question added.")
         
 def start_game(team_one_name, team_two_name):
     root = tk.Tk()
