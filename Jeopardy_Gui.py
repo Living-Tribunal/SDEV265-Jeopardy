@@ -7,17 +7,18 @@ category_bg = '#333652'
 button_bg = '#90ADC6'
 
 class GUI:
-    def __init__(self, root, main_bg, fg, category_bg, button_bg):
+    def __init__(self, root, main_bg, fg, category_bg, button_bg, team_one_name, team_two_name):
         self.root = root
         self.button_bg = button_bg
         self.main_bg = main_bg
         self.fg = fg
+        self.team_one_name = team_one_name
+        self.team_two_name = team_two_name
         self.category_bg = category_bg
         self.setup_root()
         self.create_category_frame()
         self.create_button_frame()
         self.create_team_frame()
-        """ self.create_score_frame() """
         
     def setup_root(self):
         self.root.geometry("1500x800")
@@ -26,13 +27,13 @@ class GUI:
         
     def create_team_frame(self):
         label_frame = tk.Frame(self.root, background=(category_bg))
-        team_one = input("Enter a team name for team one: ")
-        team_two = input("Enter a team name for team one: ")
+        
         team_label = tk.Label(label_frame, text=("Team Names"),font=('monospace', 30), background=(main_bg), foreground=(fg))
         team_label.grid(row=1, column=0, sticky="n", padx="5", pady="5"  )
-        team_one_label = tk.Label(label_frame, text=(team_one, ":"),font=('monospace', 20), background=(button_bg), foreground=(fg))
+        
+        team_one_label = tk.Label(label_frame, text=f"Team One: {self.team_one_name}",font=('monospace', 20), background=(button_bg), foreground=(fg))
         team_one_label.grid(row=2, column=0, sticky='n', padx="5", pady="5"  )
-        team_two_label = tk.Label(label_frame, text=(team_two, ":"),font=('monospace', 20), background=(button_bg), foreground=(fg))
+        team_two_label = tk.Label(label_frame, text=f"Team Two: {self.team_two_name}",font=('monospace', 20), background=(button_bg), foreground=(fg))
         team_two_label.grid(row=3, column=0, sticky="n", padx="5", pady="5"  )
         
         label_frame.pack(fill="x")
@@ -83,7 +84,12 @@ class GUI:
             
         button_frame.pack(fill="x")
         
-if __name__ == "__main__":
+def start_game(team_one_name, team_two_name):
     root = tk.Tk()
-    gui = GUI(root, main_bg, fg, category_bg, button_bg)
+    game_gui = GUI(root, main_bg, fg, category_bg, button_bg, team_one_name, team_two_name)
     root.mainloop()
+        
+if __name__ == "__main__":
+    team_one_name = "Team One"
+    team_two_name = "Team Two"
+    start_game(team_one_name, team_two_name)
