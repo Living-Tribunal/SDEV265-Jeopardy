@@ -83,6 +83,14 @@ class GUI:
             button.grid(row=5, column=button_value, sticky=tk.W+tk.E, padx="5", pady="5"  )
             
         button_frame.pack(fill="x")
+
+    def create_menu(self):
+        menubar = tk.Menu(self.root)
+        self.root.config(menu=menubar)
+
+        file_menu = tk.Menu(menubar, tearoff=0)
+        menubar.add_cascade(label="File", menu=file_menu)
+        file_menu.add_command(label="Add Question", command=self.add_question)
     
     def get_questions(self):
         category = simpledialog.askstring("Input", "Enter category: ")
