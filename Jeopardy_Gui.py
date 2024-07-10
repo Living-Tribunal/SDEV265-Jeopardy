@@ -20,6 +20,7 @@ class GUI:
         self.create_category_frame()
         self.create_button_frame()
         self.create_team_frame()
+        self.create_menu()
         
     def setup_root(self):
         self.root.geometry("1500x800")
@@ -82,6 +83,9 @@ class GUI:
             button.grid(row=4, column=button_value, sticky=tk.W+tk.E, padx="5", pady="5"  )
             button = tk.Button(button_frame, text="$1000",font=('monospace', 40), background=(button_bg), foreground=(fg))
             button.grid(row=5, column=button_value, sticky=tk.W+tk.E, padx="5", pady="5"  )
+
+        add_question_button = tk.Button(button_frame, text="Add Question", font=('monospace', 20), background=(button_bg), foreground=(fg), command=self.add_question)
+        add_question_button.grid(row=6, column=2, columnspan=2, sticky=tk.W+tk.E, padx="5", pady="10")
             
         button_frame.pack(fill="x")
 
@@ -93,28 +97,32 @@ class GUI:
         menubar.add_cascade(label="File", menu=file_menu)
         file_menu.add_command(label="Add Question", command=self.add_question)
     
-    def get_questions(self):
-        category = simpledialog.askstring("Input", "Enter category: ")
+    def add_question(self):
+        category = simpledialog.askstring("Input", "Enter category:")
         if not category:
-            messagebox.showwarning("Input error", "You must enter a category.")
+            messagebox.showwarning("Input Error", "Category cannot be empty")
             return
-    
-        value = simpledialog.askinteger("Input", "Enter value ($200, $400, etc.): ")
+
+        value = simpledialog.askinteger("Input", "Enter value ($200, $400, etc.):")
         if not value or value not in [200, 400, 600, 800, 1000]:
-            messagebox.showwarning("Input error", "Invalid value.")
+            messagebox.showwarning("Input Error", "Invalid value")
             return
-        
-        question = simpledialog.askstring("Input", "Enter your question: ")
+
+        question = simpledialog.askstring("Input", "Enter question:")
         if not question:
-            messagebox.showwarning("Input error", "Question cannot be empty.")
+            messagebox.showwarning("Input Error", "Question cannot be empty")
             return
-        
-        answer = simpledialog.askstring("Input", "Enter your answer: ")
+
+        answer = simpledialog.askstring("Input", "Enter answer:")
         if not answer:
-            messagebox.showwarning("Input error", "Answer cannot be empty.")
+            messagebox.showwarning("Input Error", "Answer cannot be empty")
             return
+
+        with open('questions.csv', 'a', newline='', encoding='utf-8') as file:
+            writer = csv.writer(file)
+            writer.writerow([category, value, question, answer])
         
-        messagebox.showinfo("Done", "Question added.")
+        messagebox.showinfo("Success", "Question added successfully!")
         
 def start_game(team_one_name, team_two_name):
     root = tk.Tk()
