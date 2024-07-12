@@ -23,7 +23,7 @@ class GUI:
         self.create_menu()
         
     def setup_root(self):
-        self.root.geometry("1500x800")
+        self.root.geometry("1500x900")
         self.root.title("SDEV 265 - Jeopardy")
         self.root.configure(background=(main_bg))
         

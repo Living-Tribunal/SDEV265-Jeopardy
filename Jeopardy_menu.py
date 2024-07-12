@@ -27,8 +27,8 @@ class Menu:
         team_two_name = self.team_two.get()
         print("Team One name is: ", team_one_name)
         print("Team Two name is: ", team_two_name)
+        self.root.destroy()  
         Jeopardy_Gui.start_game(team_one_name, team_two_name)
-        self.root.destroy()
         
     def create_title_entry_and_button_frame(self):
         title_entry_button_frame = tk.Frame(self.root, background=main_bg)
