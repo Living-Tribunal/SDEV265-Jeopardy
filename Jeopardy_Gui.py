@@ -121,7 +121,7 @@ class GUI:
         if user_answer:
             # Check if the answer is close enough to be considered correct
             if self.is_answer_close_enough(user_answer, answer_text):
-                messagebox.showinfo("Correct!","The full correct answer is: " + answer_text)
+                messagebox.showinfo("Correct!","That's right! The full correct answer is: " + answer_text)
             else:
                 messagebox.showinfo("Incorrect", f"Sorry, that's incorrect. The correct answer is: {answer_text}")
         else:
