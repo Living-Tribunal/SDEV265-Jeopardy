@@ -1,6 +1,7 @@
 import tkinter as tk
 from tkinter import simpledialog, messagebox
 import csv
+import difflib
 import Jeopardy_menu  # Importing the menu module where team names are entered
 
 main_bg = '#333652'
@@ -88,10 +89,6 @@ class GUI:
                 button.grid(row=value_index + 1, column=category_index, sticky=tk.W+tk.E, padx="5", pady="5")
                 button.config(command=lambda q=question: self.show_question(q))
 
-        """ # Add "Add Question" button
-        add_question_button = tk.Button(button_frame, text="Add Question", font=('monospace', 20), background=self.button_bg, foreground=self.fg, command=self.add_question)
-        add_question_button.grid(row=value_index + 2, column=num_categories // 2, columnspan=num_categories // 2, sticky=tk.W+tk.E, padx="5", pady="10") """
-
         button_frame.pack(fill="x")
 
 
@@ -118,48 +115,40 @@ class GUI:
         # Display question in a messagebox
         messagebox.showinfo("Question", question_text)
 
-        # Ask if user wants to see the answer
-        show_answer = messagebox.askyesno("Show Answer", "Do you want to see the answer?")
+        # Prompt user for their answer
+        user_answer = simpledialog.askstring("Answer", "Please enter your answer:")
 
-        if show_answer:
-            # Display answer in a messagebox
-            messagebox.showinfo("Answer", answer_text)
+        if user_answer:
+            # Check if the answer is close enough to be considered correct
+            if self.is_answer_close_enough(user_answer, answer_text):
+                messagebox.showinfo("Correct!","The full correct answer is: " + answer_text)
+            else:
+                messagebox.showinfo("Incorrect", f"Sorry, that's incorrect. The correct answer is: {answer_text}")
+        else:
+            messagebox.showwarning("No Answer", "No answer was entered.")
 
-    """ def create_menu(self):
-        menubar = tk.Menu(self.root)
-        self.root.config(menu=menubar)
+    def is_answer_close_enough(self, user_answer, correct_answer):
+        # Convert both answers to lowercase and remove leading/trailing spaces
+        user_answer = user_answer.lower().strip()
+        correct_answer = correct_answer.lower().strip()
+        
+        # Token-based matching
+        user_tokens = set(user_answer.split())
+        correct_tokens = set(correct_answer.split())
 
-        file_menu = tk.Menu(menubar, tearoff=0)
-        menubar.add_cascade(label="File", menu=file_menu)
-        file_menu.add_command(label="Add Question", command=self.add_question)
+        # Check for significant overlap in tokens
+        common_tokens = user_tokens & correct_tokens
+        token_match_ratio = len(common_tokens) / len(correct_tokens)
 
-    def add_question(self):
-        question = simpledialog.askstring("Input", "Enter question:")
-        if not question:
-            messagebox.showwarning("Input Error", "Question cannot be empty")
-            return
+        # If a significant number of tokens match, consider it correct
+        if token_match_ratio >= 0.5:
+            return True
 
-        answer = simpledialog.askstring("Input", "Enter answer:")
-        if not answer:
-            messagebox.showwarning("Input Error", "Answer cannot be empty")
-            return
+        # Use SequenceMatcher for a finer similarity measurement
+        similarity_ratio = difflib.SequenceMatcher(None, user_answer, correct_answer).ratio()
 
-        category = simpledialog.askstring("Input", "Enter category:")
-        if not category:
-            messagebox.showwarning("Input Error", "Category cannot be empty")
-            return
-
-        value = simpledialog.askstring("Input", "Enter value (e.g., $200, $400):")
-        if not value:
-            messagebox.showwarning("Input Error", "Value cannot be empty")
-            return
-
-        with open('questions.csv', 'a', newline='', encoding='utf-8') as file:
-            writer = csv.writer(file)
-            writer.writerow([category, value, question, answer])
-
-        messagebox.showinfo("Success", "Question added successfully!")
-        print(question, answer) """
+        # If similarity ratio is above a threshold (e.g., 0.6), consider it close enough
+        return similarity_ratio >= 0.6
 
 def start_game(team_one_name, team_two_name):
     root = tk.Tk()
