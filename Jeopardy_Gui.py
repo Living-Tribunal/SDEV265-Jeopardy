@@ -12,7 +12,7 @@ import csv
 import difflib
 import Jeopardy_menu  # Importing the menu module where team names are entered
 
-#setting global variables
+#declaring global color variables
 main_bg = '#333652'
 fg = '#E9EAEC'
 category_bg = '#333652'

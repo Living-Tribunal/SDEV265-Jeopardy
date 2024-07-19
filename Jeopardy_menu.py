@@ -9,6 +9,7 @@ Date: 7/19/2024
 import tkinter as tk
 import Jeopardy_Gui
 
+#Declaring global color variables
 main_bg = '#FAD02C'
 fg = '#E9EAEC'
 category_bg = '#333652'
