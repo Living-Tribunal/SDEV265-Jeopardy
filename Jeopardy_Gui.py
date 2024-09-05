@@ -1,14 +1,24 @@
+"""
+Title: SDEV 265 - Jeopardy(Python) Final Project
+Purpose: Use the Python programming language to make a fully functional Jeopardy type game.
+Team Members: Maria Arreola, Abbas Rahimi, Sahajpreet Singh, Cody Dalton
+Date: 7/19/2024  
+"""
+
+#Importing the necessary modules
 import tkinter as tk
 from tkinter import simpledialog, messagebox
 import csv
 import difflib
 import Jeopardy_menu  # Importing the menu module where team names are entered
 
+#declaring global color variables
 main_bg = '#333652'
 fg = '#E9EAEC'
 category_bg = '#333652'
 button_bg = '#90ADC6'
 
+#defining a class for the main GUI
 class GUI:
     def __init__(self, root, main_bg, fg, category_bg, button_bg, team_one_name, team_two_name):
         self.root = root
@@ -24,11 +34,13 @@ class GUI:
         self.create_button_frame()
         self.create_team_frame()
 
+    #initiates the windows size , title, and background color   
     def setup_root(self):
         self.root.geometry("1500x900")
         self.root.title("SDEV 265 - Jeopardy")
         self.root.configure(background=main_bg)
 
+    #setup frame to hold inputed team names
     def create_team_frame(self):
         label_frame = tk.Frame(self.root, background=(category_bg))
         
@@ -42,6 +54,7 @@ class GUI:
         
         label_frame.pack(fill="x")
 
+    #setup frame to hold the categories
     def create_category_frame(self):
         category_frame = tk.Frame(self.root, background=main_bg)
         
@@ -57,6 +70,7 @@ class GUI:
 
         category_frame.pack(fill="both")
 
+    #reading categories from the .csv file
     def read_categories_from_csv(self, filename):
         categories = []
         try:
@@ -70,6 +84,7 @@ class GUI:
             print(f"Error: File '{filename}' not found.")
         return categories
 
+    #setup frame to hold the value buttons
     def create_button_frame(self):
         button_frame = tk.Frame(self.root, background=self.category_bg)
 
@@ -91,7 +106,7 @@ class GUI:
 
         button_frame.pack(fill="x")
 
-
+    #function to read Q/A from the .csv file
     def read_questions_from_csv(self, filename):
         questions = [[] for _ in range(5)]  # 5 rows (values) per category
         try:
@@ -108,6 +123,7 @@ class GUI:
             print(f"Error: File '{filename}' not found.")
         return questions
 
+    #function to pop up messagebox to show Q/A
     def show_question(self, question_data):
         question_text = question_data['Question']
         answer_text = question_data['Answer']
@@ -127,6 +143,7 @@ class GUI:
         else:
             messagebox.showwarning("No Answer", "No answer was entered.")
 
+    #function to check if the answer is close to what is in the question. If so correct, if not, incorrect.
     def is_answer_close_enough(self, user_answer, correct_answer):
         # Convert both answers to lowercase and remove leading/trailing spaces
         user_answer = user_answer.lower().strip()
@@ -150,6 +167,7 @@ class GUI:
         # If similarity ratio is above a threshold (e.g., 0.6), consider it close enough
         return similarity_ratio >= 0.6
 
+#running the game
 def start_game(team_one_name, team_two_name):
     root = tk.Tk()
     game_gui = GUI(root, main_bg, fg, category_bg, button_bg, team_one_name, team_two_name)

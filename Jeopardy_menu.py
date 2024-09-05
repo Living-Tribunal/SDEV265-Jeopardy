@@ -1,11 +1,21 @@
+"""
+Title: SDEV 265 - Jeopardy(Python) Final Project
+Purpose: Use the Python programming language to make a fully functional Jeopardy type game.
+Team Members: Maria Arreola, Abbas Rahimi, Sahajpreet Singh, Cody Dalton
+Date: 7/19/2024  
+"""
+
+#Importing the necessary modules
 import tkinter as tk
 import Jeopardy_Gui
 
+#Declaring global color variables
 main_bg = '#FAD02C'
 fg = '#E9EAEC'
 category_bg = '#333652'
 button_bg = '#90ADC6'
 
+#defining a class for the main Menu
 class Menu:
     def __init__(self, root, main_bg, fg, button_bg):
         self.root = root
@@ -17,11 +27,13 @@ class Menu:
         self.setup_root()
         self.create_title_entry_and_button_frame()
         
+    #initiates the windows size , title, and background color   
     def setup_root(self):
         self.root.geometry("1500x800")
         self.root.title("SDEV 265 - Jeopardy")
         self.root.configure(background=(main_bg))
         
+    #submit function for team names   
     def on_submit(self):
         team_one_name = self.team_one.get()
         team_two_name = self.team_two.get()
@@ -29,7 +41,8 @@ class Menu:
         print("Team Two name is: ", team_two_name)
         self.root.destroy()  
         Jeopardy_Gui.start_game(team_one_name, team_two_name)
-        
+     
+    #setting up the frames needed to hold the labels, buttons, and inputs    
     def create_title_entry_and_button_frame(self):
         title_entry_button_frame = tk.Frame(self.root, background=main_bg)
         
@@ -58,7 +71,8 @@ class Menu:
         submit_button.grid(row=4, column=0, columnspan=2, pady=(30, 30), sticky="n")
         
         title_entry_button_frame.place(relx=0.5, rely=0.5, anchor='center')        
-        
+
+#running main program        
 if __name__ == "__main__":
     root = tk.Tk()
     menu = Menu(root, main_bg, fg, button_bg)
